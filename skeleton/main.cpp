@@ -22,6 +22,7 @@
 // Para las escenas del curso, se incluyen los headers de las prácticas y la escena vacía
 #include "SceneManager.h"
 #include "EmptyScene.h"
+#include "scenes/Scene0.h"
 
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
@@ -97,24 +98,26 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 	// Registrar las prácticas/escenas del curso
-	SceneManager::instance().registerScene<EmptyScene>("EscenaVacia");
+	//SceneManager::instance().registerScene<EmptyScene>("EscenaVacia");
+	SceneManager::instance().registerScene<Scene0>("Scene0");
 	
 	// Cargar la escena inicial
-	SceneManager::instance().changeScene("EscenaVacia");
+	//SceneManager::instance().changeScene("EscenaVacia");
+	SceneManager::instance().changeScene("Scene0");
 	
 }
 
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
-void stepPhysics(bool interactive, double t)
+void stepPhysics(bool interactive, double dt)
 {
 	PX_UNUSED(interactive);
 	
 	if (!gScene) return;
 
 	// Accumulate time and step the physics simulation in fixed timesteps
-	gPhysicsTimeAccumulator += t;
+	gPhysicsTimeAccumulator += dt;
 
 	// Step the physics simulation in fixed timesteps
 	// This loop allows for multiple physics steps if the accumulated time exceeds the fixed timestep
@@ -129,7 +132,7 @@ void stepPhysics(bool interactive, double t)
 
 		gPhysicsTimeAccumulator -= gFixedTimestep;
 	}
-	SceneManager::instance().update(t);
+	SceneManager::instance().update(dt);
 }
 
 
