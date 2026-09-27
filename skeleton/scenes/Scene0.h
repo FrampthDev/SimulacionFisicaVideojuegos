@@ -17,7 +17,7 @@ public:
     void update(double dt) override;
 
     //Particle factory TODO: hacer esto más general a todas las escenas
-    void new_particle(Vector3D pos, Vector3D vel);
+    void new_particle(Vector3D pos, Vector3D acc, Vector3D vel);
 private:
     std::vector<RenderItem*> render_item_vector;
     std::vector<Particle*> particle_vector;
