@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "RenderUtils.hpp"
+#include "../RenderUtils.hpp"
 #include <vector>
 
 class EmptyScene : public Scene {

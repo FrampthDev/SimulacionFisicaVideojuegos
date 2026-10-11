@@ -12,8 +12,15 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="utils\Vector3D.cpp" />
-    <ClCompile Include="scenes\Scene0.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="scenes\Scene0.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\Scene1.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scenes\Scene2.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -25,16 +32,29 @@
     </ClInclude>
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
-    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="EmptyScene.h" />
+    <ClInclude Include="scenes\EmptyScene.h" />
     <ClInclude Include="utils\Vector3D.h" />
-    <ClInclude Include="scenes\Scene0.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="scenes\Scene1.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\Scene0.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="scenes\Scene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\UtilsFunctions.h" />
+    <ClInclude Include="scenes\Scene2.h" />
+    <ClInclude Include="ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
       <UniqueIdentifier>{d04b4f9f-5a69-465e-8070-25c6d0bcd3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{c474598c-86b2-413f-9339-d1d49cc3fdfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -95,36 +95,36 @@ void renderCallback()
 	stepPhysics(true, t);
 #endif
 
-	startRender(sCamera->getEye(), sCamera->getDir());
-
-	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
-	for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
-	{
-		const RenderItem* obj = (*it);
-		auto objTransform = obj->transform;
-		if (!objTransform)
-		{
-			auto actor = obj->actor;
-			if (actor)
-			{
-				renderShape(*obj->shape, actor->getGlobalPose(), obj->color);
-				continue;
-			}
-		}
-		renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
-	}
-
-	//PxScene* scene;
-	//PxGetPhysics().getScenes(&scene, 1);
-	//PxU32 nbActors = scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
-	//if (nbActors)
+	//startRender(sCamera->getEye(), sCamera->getDir());
+	//
+	////fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
+	//for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
 	//{
-	//	std::vector<PxRigidActor*> actors(nbActors);
-	//	scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
-	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	//	const RenderItem* obj = (*it);
+	//	auto objTransform = obj->transform;
+	//	if (!objTransform)
+	//	{
+	//		auto actor = obj->actor;
+	//		if (actor)
+	//		{
+	//			renderShape(*obj->shape, actor->getGlobalPose(), obj->color);
+	//			continue;
+	//		}
+	//	}
+	//	renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
 	//}
-
-	finishRender();
+	//
+	////PxScene* scene;
+	////PxGetPhysics().getScenes(&scene, 1);
+	////PxU32 nbActors = scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+	////if (nbActors)
+	////{
+	////	std::vector<PxRigidActor*> actors(nbActors);
+	////	scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+	////	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	////}
+	//
+	//finishRender();
 }
 
 void exitCallback(void)

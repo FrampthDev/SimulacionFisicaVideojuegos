@@ -21,8 +21,10 @@
 #include <iostream>
 // Para las escenas del curso, se incluyen los headers de las prácticas y la escena vacía
 #include "SceneManager.h"
-#include "EmptyScene.h"
+#include "Scenes/EmptyScene.h"
 #include "scenes/Scene0.h"
+#include "scenes/Scene1.h"
+#include "scenes/Scene2.h"
 
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
@@ -99,11 +101,11 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 	// Registrar las prácticas/escenas del curso
 	//SceneManager::instance().registerScene<EmptyScene>("EscenaVacia");
-	SceneManager::instance().registerScene<Scene0>("Scene0");
+	SceneManager::instance().registerScene<Scene2>("Scene2");
 	
 	// Cargar la escena inicial
 	//SceneManager::instance().changeScene("EscenaVacia");
-	SceneManager::instance().changeScene("Scene0");
+	SceneManager::instance().changeScene("Scene2");
 	
 }
 
@@ -131,8 +133,9 @@ void stepPhysics(bool interactive, double dt)
 		gScene->fetchResults(true);
 
 		gPhysicsTimeAccumulator -= gFixedTimestep;
+		SceneManager::instance().update(gFixedTimestep);
 	}
-	SceneManager::instance().update(dt);
+	
 }
 
 

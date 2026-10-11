@@ -5,21 +5,24 @@
 
 #include <iostream>
 
-Particle::Particle(Vector3D pos,Vector3D acc, double damping, Vector3D vel, integrator i) 
-	: vel(vel),damping(damping), acceleration(acc) {
+Particle::Particle(Vector3D pos, Vector3D acc, double damping, Vector3D vel, integrator i, double mass, Vector3D g )
+	: vel(vel),damping(damping), acceleration(acc), mass(mass), g(g){
 
 	switch (i){
 		case integrator::EULER:
 		{
 			integrate = euler_integrate;
+			break;
 		}
 		case integrator::VERLET:
 		{
 			integrate = verlet_integrate;
+			break;
 		}
 		default: 
 		{
 			integrate = semi_euler_integrate;
+			break;
 		}
 	}
 
@@ -42,5 +45,5 @@ void Particle::semi_euler_integrate(double t, Particle& p){
 	p.vel = p.vel * pow(p.damping, t);
 }
 void Particle::verlet_integrate(double t, Particle& p){
-
+	//TODO: hacer esto. Integrar primero con semi-euler para la primera iteracion y luego seguir con verlet
 }

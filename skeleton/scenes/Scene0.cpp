@@ -10,7 +10,7 @@
 Scene0::Scene0(std::string name) : Scene(std::move(name)) {}
 
 void Scene0::new_particle(Vector3D pos, Vector3D acc, Vector3D vel){
-    Particle* p = new Particle(pos,acc,0.1,vel, Particle::integrator::EULER_SEMI);
+    Particle* p = new Particle(pos,acc,0.1,vel, Particle::integrator::EULER_SEMI,0);
     particle_vector.push_back(p);
     render_item_vector.push_back(p->render_item);
 }

@@ -3,6 +3,8 @@
 #include <string>
 #include "PxPhysicsAPI.h"
 
+#define MAX_PARTICLES 1000
+
 // Clase base para las distintas escenas de la aplicación.
 // Provee la interfaz mínima que debe implementar cualquier escena:
 // inicialización, limpieza, actualización por frame y manejo de teclado.
@@ -31,8 +33,33 @@ public:
     // Devuelve el nombre identificador de la escena.
     [[nodiscard]] const std::string& getName() const { return m_name; }
 
-
+    //TODO: cambiar esto a un método propio o cargarse a la clase escena...
+    size_t last_particle = 0;
+    struct {
+        struct {
+            float x[MAX_PARTICLES];
+            float y[MAX_PARTICLES];
+            float z[MAX_PARTICLES];
+        }pos;
+        struct {
+            float x[MAX_PARTICLES];
+            float y[MAX_PARTICLES];
+            float z[MAX_PARTICLES];
+        }vel;
+        struct {
+            float x[MAX_PARTICLES];
+            float y[MAX_PARTICLES];
+            float z[MAX_PARTICLES];
+        }acc;
+        float mass[MAX_PARTICLES];
+        float damping[MAX_PARTICLES];
+        float life_time[MAX_PARTICLES];
+        bool active[MAX_PARTICLES];
+    } Particles;
 protected:
     // Nombre de la escena (útil para identificarla en menús o logs).
     std::string m_name;
+
+    
+
 };
