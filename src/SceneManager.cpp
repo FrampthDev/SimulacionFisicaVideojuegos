@@ -1,4 +1,4 @@
-#include "SceneManager.h"
+/*#include "SceneManager.h"
 #include <iostream>
 
 // Solicita el cambio de escena. Si el nombre no está registrado, se escribe
@@ -56,4 +56,4 @@ void SceneManager::keyPress(unsigned char key, const physx::PxTransform& cameraT
     if (m_currentScene != nullptr) {
         m_currentScene->keyPress(key, cameraTransform);
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 // This code contains NVIDIA Confidential Information and is disclosed to you
 // under a form of NVIDIA software license agreement provided separately to you.
 //
@@ -60,3 +61,4 @@ private:
 
 
 #endif //PHYSX_SNIPPET_CAMERA_H
+*/

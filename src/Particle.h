@@ -1,8 +1,8 @@
 #ifndef PARTICLE_N
 #define PARTICLE_N
 
-#include <PxPhysicsAPI.h>
-#include "utils/Vector3D.h"
+//#include <PxPhysicsAPI.h>
+#include "utils/Types.h"
 
 class Particle{
 public:
@@ -20,7 +20,7 @@ private:
 	Vector3D vel;
 	Vector3D acceleration;
 	double damping = 0;
-	physx::PxTransform pose;
+	//physx::PxTransform pose;
 	double mass;
 	Vector3D g;
 	

@@ -1,4 +1,5 @@
-﻿#ifndef Vector3D_h
+﻿/*
+#ifndef Vector3D_h
 #define Vector3D_h
 
 #include <cassert>
@@ -71,4 +72,4 @@ struct Vector3D {
 	operator physx::PxVec3() const;
 };
 
-#endif
+#endif*/

@@ -15,7 +15,7 @@ public:
     void init() override;
     void cleanup() override;
     void update(double dt) override;
-    void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) override;
+    //void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) override;
 
 private:
     std::vector<RenderItem*> render_item_vector;
@@ -29,9 +29,9 @@ private:
     void shoot_particle(Vector3D pos, Vector3D dir) {
         float s_vel = std::clamp(utils::remap<float>(vel, 0.0f,500.0f,0, 150.0f), 0.0f, 150.0f);
         double s_mass = mass * std::pow((vel/s_vel), 2);
-        Vector3D s_g = g * std::pow((s_vel/vel),2);
-        Particle* p = new Particle(pos, s_g, 0.98f,dir * s_vel, Particle::EULER_SEMI,s_mass, s_g);
-        particle_pool.push_back(p);
+        //Vector3D s_g = g * std::pow((s_vel/vel),2);
+        //Particle* p = new Particle(pos, s_g, 0.98f,dir * s_vel, Particle::EULER_SEMI,s_mass, s_g);
+        //particle_pool.push_back(p);
         //render_item_vector.push_back(p->render_item);
     }
 };

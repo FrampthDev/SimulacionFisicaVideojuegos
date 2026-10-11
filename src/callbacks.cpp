@@ -1,4 +1,4 @@
-#include "callbacks.hpp"
+/*#include "callbacks.hpp"
 
 extern void onCollision(physx::PxActor* actor1, physx::PxActor* actor2);
 
@@ -28,4 +28,4 @@ void ContactReportCallback::onContact(const physx::PxContactPairHeader& pairHead
 	physx::PxActor* actor1 = pairHeader.actors[0];
 	physx::PxActor* actor2 = pairHeader.actors[1];
 	onCollision(actor1, actor2);
-}
+}*/

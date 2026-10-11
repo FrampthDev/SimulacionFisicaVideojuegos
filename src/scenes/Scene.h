@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "PxPhysicsAPI.h"
+//#include "PxPhysicsAPI.h"
 
 #define MAX_PARTICLES 1000
 
@@ -28,7 +28,7 @@ public:
     // Se recibe la tecla pulsada y la transformada de la cámara para
     // permitir respuestas dependientes de la orientación/posición de la cámara.
     // Método opcional que puede ser sobrescrito por escenas que lo necesiten.
-    virtual void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) {}
+    //virtual void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) {}
 
     // Devuelve el nombre identificador de la escena.
     [[nodiscard]] const std::string& getName() const { return m_name; }

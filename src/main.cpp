@@ -1,4 +1,4 @@
-﻿
+﻿/*
 
 #if defined(_DEBUG) && defined(NDEBUG)
 #pragma message("⚠️ ¡ALERTA! Ambas macros (_DEBUG y NDEBUG) están definidas a la vez.")
@@ -13,7 +13,7 @@
 
 #include <ctype.h>
 
-#include <PxPhysicsAPI.h>
+//#include <PxPhysicsAPI.h>
 #include <vector>
 
 #include "core.hpp"
@@ -22,7 +22,7 @@
 #include <iostream>
 // Para las escenas del curso, se incluyen los headers de las prácticas y la escena vacía
 #include "SceneManager.h"
-#include "Scenes/EmptyScene.h"
+//#include "Scenes/EmptyScene.h"
 #include "scenes/Scene0.h"
 #include "scenes/Scene1.h"
 #include "scenes/Scene2.h"
@@ -53,7 +53,7 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 //ContactReportCallback gContactReportCallback;
-
+*/
 // Global variables for physics timing. We use a fixed timestep for physics simulation, and accumulate time to determine when to step the physics simulation.
 double gPhysicsTimeAccumulator = 0.0;
 const double gFixedTimestep = 1.0 / 60.0;

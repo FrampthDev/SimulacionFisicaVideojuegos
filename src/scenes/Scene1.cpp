@@ -12,7 +12,8 @@ Scene1::Scene1(std::string name) : Scene(std::move(name)) {}
 void Scene1::init() {
 
 }
-void Scene1::keyPress(unsigned char key, const physx::PxTransform& cameraTransform) {
+//void Scene1::keyPress(unsigned char key, const physx::PxTransform& cameraTransform) {
+/*
     switch (key) {
         case 'p':
         {
@@ -44,7 +45,7 @@ void Scene1::keyPress(unsigned char key, const physx::PxTransform& cameraTransfo
             break;
         }
     }
-}
+}*/
 void Scene1::cleanup() {
     //for (RenderItem* ri : render_item_vector) {
     //    if (ri != nullptr)

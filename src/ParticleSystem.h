@@ -3,7 +3,7 @@
 #include <immintrin.h>
 #include <random>
 
-#include "utils/Vector3D.h"
+#include "utils/Types.h"
 
 class Scene;
 

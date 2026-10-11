@@ -1,5 +1,5 @@
 ﻿#include "Vector3D.h"
-
+/*
 #include "PxPhysicsAPI.h"
 
 #include <cmath>
@@ -27,4 +27,4 @@ Vector3D Vector3D::cross(const Vector3D& other) const {
 
 Vector3D::operator physx::PxVec3() const {
 	return physx::PxVec3( x, y, z );
-}
+}*/
