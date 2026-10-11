@@ -1,7 +1,6 @@
 #include <PxPhysicsAPI.h>
 #include "particle.h"
 #include "utils/Vector3D.h"
-#include "RenderUtils.hpp"
 
 #include <iostream>
 
@@ -27,11 +26,11 @@ Particle::Particle(Vector3D pos, Vector3D acc, double damping, Vector3D vel, int
 	}
 
 	pose = physx::PxTransform(pos);
-	render_item = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0f)),&pose, Vector4(1,1,1,1));
+	//render_item = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0f)),&pose, Vector4(1,1,1,1));
 }
 
 Particle::~Particle(){
-	delete render_item;
+	//delete render_item;
 }
 
 void Particle::euler_integrate(double t, Particle& p){

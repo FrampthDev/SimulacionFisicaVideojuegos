@@ -1,6 +1,4 @@
 #include "Scene2.h"
-#include "../Render/Render.h"
-
 #include <immintrin.h>
 
 
@@ -35,16 +33,16 @@ void Scene2::update(double dt) {
 		Particles.vel.z[p] *= pow(Particles.damping[p], dt);
 	}
 	for (size_t p = 0; p < MAX_PARTICLES; ++p){
-		startRender(GetCamera()->getEye(), GetCamera()->getEye());
-		//TODO: Cambiar a raylib y usar un shader para renderizar
-		if (Particles.active[p]) {
-
-			physx::PxTransform tr = physx::PxTransform({ Particles.pos.x[p], Particles.pos.y[p], Particles.pos.z[p] });
-			renderShape(*shape, tr, {1,0,0,1});
-			
-
-		}
-		finishRender();
+		//startRender(GetCamera()->getEye(), GetCamera()->getEye());
+		////TODO: Cambiar a raylib y usar un shader para renderizar
+		//if (Particles.active[p]) {
+		//
+		//	physx::PxTransform tr = physx::PxTransform({ Particles.pos.x[p], Particles.pos.y[p], Particles.pos.z[p] });
+		//	renderShape(*shape, tr, {1,0,0,1});
+		//	
+		//
+		//}
+		//finishRender();
 	}
 	
 	

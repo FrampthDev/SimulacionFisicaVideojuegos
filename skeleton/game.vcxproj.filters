@@ -4,12 +4,7 @@
     <ClCompile Include="Render\Camera.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Render.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="utils\Vector3D.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -27,11 +22,6 @@
     <ClInclude Include="Render\Camera.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Render\Render.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderUtils.hpp" />
-    <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="scenes\EmptyScene.h" />
     <ClInclude Include="utils\Vector3D.h" />
@@ -48,6 +38,8 @@
     <ClInclude Include="utils\UtilsFunctions.h" />
     <ClInclude Include="scenes\Scene2.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="APIs\RenderAPI\RenderAPI.h" />
+    <ClInclude Include="utils\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

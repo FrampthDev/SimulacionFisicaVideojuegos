@@ -32,7 +32,7 @@ private:
         Vector3D s_g = g * std::pow((s_vel/vel),2);
         Particle* p = new Particle(pos, s_g, 0.98f,dir * s_vel, Particle::EULER_SEMI,s_mass, s_g);
         particle_pool.push_back(p);
-        render_item_vector.push_back(p->render_item);
+        //render_item_vector.push_back(p->render_item);
     }
 };
 

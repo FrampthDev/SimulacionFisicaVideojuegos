@@ -1,6 +1,6 @@
 #include "Scene1.h"
 
-#include "../RenderUtils.hpp"
+
 #include "../utils/Vector3D.h"
 #include "../Particle.h"
 
@@ -16,7 +16,7 @@ void Scene1::keyPress(unsigned char key, const physx::PxTransform& cameraTransfo
     switch (key) {
         case 'p':
         {
-            shoot_particle(GetCamera()->getTransform().p, GetCamera()->getDir());
+            //shoot_particle(GetCamera()->getTransform().p, GetCamera()->getDir());
             break;
         }
         case 'h': // aumentar masa
@@ -46,15 +46,15 @@ void Scene1::keyPress(unsigned char key, const physx::PxTransform& cameraTransfo
     }
 }
 void Scene1::cleanup() {
-    for (RenderItem* ri : render_item_vector) {
-        if (ri != nullptr)
-            ri->release();
-    }
-    render_item_vector.clear();
-    for (Particle* p : particle_pool) {
-        if (p != nullptr) delete p;
-    }
-    particle_pool.clear();
+    //for (RenderItem* ri : render_item_vector) {
+    //    if (ri != nullptr)
+    //        ri->release();
+    //}
+    //render_item_vector.clear();
+    //for (Particle* p : particle_pool) {
+    //    if (p != nullptr) delete p;
+    //}
+    //particle_pool.clear();
 }
 void Scene1::update(double dt) {
     for (Particle* p : particle_pool) {

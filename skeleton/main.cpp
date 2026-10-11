@@ -1,4 +1,6 @@
-﻿#if defined(_DEBUG) && defined(NDEBUG)
+﻿
+
+#if defined(_DEBUG) && defined(NDEBUG)
 #pragma message("⚠️ ¡ALERTA! Ambas macros (_DEBUG y NDEBUG) están definidas a la vez.")
 #elif defined(_DEBUG)
 #pragma message("ℹ️ Solo _DEBUG está definida.")
@@ -15,8 +17,7 @@
 #include <vector>
 
 #include "core.hpp"
-#include "RenderUtils.hpp"
-#include "callbacks.hpp"
+//#include "callbacks.hpp"
 
 #include <iostream>
 // Para las escenas del curso, se incluyen los headers de las prácticas y la escena vacía
@@ -30,6 +31,7 @@
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
 
 #define PVD_HOST "127.0.0.1" // IP localhost for PVD connection
+
 
 
 std::string display_text = "This is a test";
@@ -50,13 +52,13 @@ PxPvd*                  gPvd        = NULL;
 
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
-ContactReportCallback gContactReportCallback;
+//ContactReportCallback gContactReportCallback;
 
 // Global variables for physics timing. We use a fixed timestep for physics simulation, and accumulate time to determine when to step the physics simulation.
 double gPhysicsTimeAccumulator = 0.0;
 const double gFixedTimestep = 1.0 / 60.0;
 
-
+/*
 void initPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
@@ -211,6 +213,25 @@ int main(int, const char*const*)
 		stepPhysics(false);
 	cleanupPhysics(false);
 #endif
+
+	return 0;
+}^*/
+
+#include <raylib.h>
+
+int main(void)
+{
+	InitWindow(800, 450, "raylib example - basic window");
+
+	while (!WindowShouldClose())
+	{
+		BeginDrawing();
+		ClearBackground(RAYWHITE);
+		DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+		EndDrawing();
+	}
+
+	CloseWindow();
 
 	return 0;
 }

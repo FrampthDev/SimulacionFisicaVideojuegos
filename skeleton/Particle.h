@@ -3,7 +3,6 @@
 
 #include <PxPhysicsAPI.h>
 #include "utils/Vector3D.h"
-#include "RenderUtils.hpp"
 
 class Particle{
 public:
@@ -31,7 +30,7 @@ private:
 
 public:
 	//TODO: Cambiar esto
-	RenderItem* render_item;
+	//RenderItem* render_item;
 };
 
 
