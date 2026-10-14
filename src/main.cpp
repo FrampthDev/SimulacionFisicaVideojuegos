@@ -217,21 +217,35 @@ int main(int, const char*const*)
 	return 0;
 }^*/
 
+#include "APIs/RenderAPI/RenderAPI.h"
+#include <iostream>
 #include <raylib.h>
-
 int main(void)
 {
-	InitWindow(800, 450, "raylib example - basic window");
+    ShapeAPI s = CreateSphereShape(10);
+    Camera3DAPI c = CreateCamera3D({50,0,0},{0,0,0},{0,1,0},90,1);
+    StartWindow(512,512,"hola");
+    while(!WindowClosed()){
+        StartRendering();
 
-	while (!WindowShouldClose())
-	{
-		BeginDrawing();
-		ClearBackground(RAYWHITE);
-		DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-		EndDrawing();
-	}
+        ClearRenderingBackground({50,50,150,255});
 
-	CloseWindow();
+        StartMode3D(c);
 
-	return 0;
+        std::cout << GetRenderError().error<<"\n";
+        Transform3D t = {
+            {0,0,0},
+            {0,0,0},
+            {1,1,1},
+        };
+        RenderShape(s,t,1);
+
+        StopMode3D();
+        StopRendering();
+    }
+    std::cout << "ERROR: " << GetRenderError().error << "\n";
+
+    StopWindow();
+
+    return 0;
 }

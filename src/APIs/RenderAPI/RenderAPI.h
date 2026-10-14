@@ -5,84 +5,49 @@
 
 #include "../../utils/Types.h"
 
-#define IDX size_t
+#define ID long unsigned int
 
-enum Projection {
-	PERSPECTIVE,
-	ORTOGONAL,
-};
+typedef struct IDX{
+    const ID id;   
+    const bool nil;
+} IDX;
 
-enum Shape {
-	SPHERE,
-	PLANE,
-};
+typedef struct RenderError{
+    char* error;
+} RenderError;
 
-typedef struct Shape3D{
-	Shape shape;
-	union{
-		struct{
-			float radius;
-		}sphere;
-		struct {
-			Vector3D p1;
-			Vector3D p2;
-		}Plane;
-	}ShapeData;
-}Shape3D;
+typedef IDX ShapeAPI;
+typedef IDX Camera3DAPI;
+typedef IDX ShaderAPI;
+typedef IDX MaterialAPI;
 
-typedef struct Shape3DIDX{
-	IDX id;
-}Shape3DIDX;
-
-typedef struct RenderCamera{
-	Vector3D position;
-	Vector3D look;
-	Vector3D up;
-	float fov;
-	Projection projection;
-}RenderCamera;
-
-typedef struct RenderCameraIDX {
-	IDX id;
-}RenderCameraIDX;
-
-typedef struct Mesh{
-	//TODO: This should be something abstract, like the path to the model
-}Mesh;
-
-typedef struct MeshIDX {
-	IDX id;
-}MeshIDX;
-
-typedef struct Shader {
-	char* vertex_shaer_path;
-	char* fragment_shader_path;
-}Shader;
-
-typedef struct ShaderIDX{
-	IDX id;
-}ShaderIDX;
-
-typedef struct Material {
-	ShaderIDX shader;
-	//TODO:What else does this need?
-}Material;
-
-typedef struct MaterialIDX {
-	IDX id;
-}MaterialIDX;
+// NOTE: should we have multiple windows??
+void StartWindow(int width, int height, const char* name);
+void StopWindow(void);
+bool WindowClosed();
 
 void StartRendering(void);
 void StopRendering(void);
+void ClearRenderingBackground(ColorRGBA color);
 
-void StartMode3D(RenderCameraIDX camera);
+void StartMode3D(Camera3DAPI camera);
 void StopMode3D(void);
 
-Shape3DIDX CreateSphereShape(float radius);
-Shape3DIDX CreatePlaneShape(Vector3D position1, Vector3D position2);
+ShapeAPI CreateSphereShape(float radius);
+ShapeAPI CreatePlaneShape(Vector2D lenght);
+ShapeAPI CreateMeshShape(); //TODO
+// Change fov too
+Camera3DAPI CreateCamera3D(Vector3D position, Vector3D look, Vector3D up, float fov, int projection);
+Camera3DAPI UpdateCamera3D(Vector3D position, Vector3D look, Vector3D up);
 
-void RenderShape(Shape3DIDX shape, Transform transform, float scale);
-void RenderShape(Shape3DIDX shape, Transform transform, float scale, MaterialIDX material);
+//TODO: funciones de destrucción
+void DestroyShape(ShapeAPI);
 
+MaterialAPI CreateMaterial(); //TODO
+
+void RenderShape(ShapeAPI shape, Transform3D transform, float scale);
+void RenderMaterialShape(ShapeAPI shape, Transform3D transform, float scale, MaterialAPI material);
+
+RenderError GetRenderError();
 
 #endif //RENDER_API_H

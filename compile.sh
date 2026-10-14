@@ -12,7 +12,12 @@ while IFS= read -r -d $'\0'; do
     sources+="$REPLY "
 done < <(find $src_dir -name "*.cpp" -print0)
 
-echo "Compiling:"
+while IFS= read -r -d $'\0'; do
+    sources+="$REPLY "
+done < <(find $src_dir -name "*.c" -print0)
+
+
+echo "Compiling files:"
 for file in $sources; do
     echo "$file"
 done
