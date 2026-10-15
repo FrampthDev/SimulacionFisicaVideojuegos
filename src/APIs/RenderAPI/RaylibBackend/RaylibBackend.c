@@ -1,31 +1,32 @@
 #include <raylib.h>
-#include <stdio.h>
-
 #include "../RenderAPI.h"
+#include <stdio.h>
+#include <assert.h>
 
-// Data structure's Provisional implementations
-// TODO: hacer una pool
+#define NUM_MODELS 512
+#define NUM_SCENES 3
+
 Camera cameras_array[5];
 ID last_camera = 1;
 
-enum ShapeType{
-    SPHERE,
-    PLANE,
-};
-typedef struct Shape{
-    enum ShapeType type;
-    union{
-        struct {
-            float radius;
-        }sphere;
-        struct{
-            Vector2 lenght;
-        }plane;
-    };
-}Shape;
+typedef struct Scene{
+    Model model_array[NUM_MODELS];
+    Transform transform_array[NUM_MODELS];
+    Color tint_array[NUM_MODELS];
+    bool valid[NUM_MODELS];
+    // ...
+    ID last_model;
+    struct { // Esto es un stack con las ids de los últimos modelos liberados
+        ID stack[NUM_MODELS];
+        ID stack_pointer;
+        bool empty_stack;
+    }free_space;
+   
+}Scene;
 
-Shape shapes_array[100];
-ID last_shape = 1;
+SceneAPI current_scene = 0;
+Scene scenes[NUM_SCENES]; 
+SceneAPI last_scene = 0;
 
 bool drawing = false;
 bool mode3D = false;
@@ -56,7 +57,7 @@ static ColorRGBA Color_to_ColorRGBA(Color color){
     return ret;
 }
 static Camera3D Camera3DAPI_to_Camera3D(Camera3DAPI camera){
-    Camera3D ret = cameras_array[camera.id];
+    Camera3D ret = cameras_array[camera];
     return ret;
 }
 static Quaternion Quaternion3D_to_Quaternion(Quaternion3D quaternion){
@@ -83,7 +84,22 @@ static Transform3D Transform_to_Transform3D(Transform transform){
     };
     return ret;
 }
+// Finds a new empty id in the scene //TODO: si no encuentra una devuelve 0
+static ModelAPI FindNewModelID(void){
+    if (scenes[current_scene].free_space.empty_stack){
+        return ++scenes[current_scene].last_model;
+    }
 
+    ID id = scenes[current_scene].free_space.stack[scenes[current_scene].free_space.stack_pointer];
+    if (id != 0){
+        scenes[current_scene].free_space.stack_pointer--;
+    }
+    else {
+        scenes[current_scene].free_space.empty_stack = true;
+    }
+    return id;
+
+}
 // Error handling
 RenderError last_error;
 static void SetError(char* error){
@@ -107,7 +123,7 @@ void ClearRenderingBackground(ColorRGBA color){
 }
 void StartMode3D(Camera3DAPI camera){
     mode3D = true;
-    BeginMode3D(cameras_array[camera.id]);
+    BeginMode3D(cameras_array[camera]);
 }
 void StopMode3D(void){
     mode3D = false;
@@ -121,61 +137,70 @@ Camera3DAPI CreateCamera3D(Vector3D position, Vector3D look, Vector3D up, float 
         fov, 
         projection};
     cameras_array[last_camera] = c;
-    Camera3DAPI ret = {last_camera, false};
+    Camera3DAPI ret = last_camera;
     last_camera++;
     return ret;
-}
-Camera3DAPI UpdateCamera3D(Vector3D position, Vector3D look, Vector3D up){
 
 }
-
-
-ShapeAPI CreateSphereShape(float radius){
-    if (radius <= 0){
-        ShapeAPI ret = {0, true};
-        return ret;
-    }
-    Shape shape;
-    shape.type = SPHERE;
-    shape.sphere.radius = radius;
-    shapes_array[last_shape] = shape;
-    ShapeAPI ret = {last_shape, false};
-    last_shape++;
-    return ret;
-}
-ShapeAPI CreatePlaneShape(Vector2D lenght){
-    Shape shape;
-    shape.type = PLANE;
-    shape.plane.lenght = vector2D_to_vector2(lenght);
-    ShapeAPI ret = {last_shape, false};
-    shapes_array[last_shape] = shape;
-    last_shape++;
-    return ret;
-}
-void RenderShape(ShapeAPI shape, Transform3D transform, float scale){
-    if (!drawing){
-        SetError("Trying to render a shape without enable rendering first");
-        return;
-    }
-    if (!mode3D){
-        SetError("Trying to render a shape without enable mode3D");
-        return;
-    }
-
-    Shape s = shapes_array[shape.id];
-    Color default_color = {0xFF,0xFF,0xFF,0xFF};
-    switch (s.type) {
-        case PLANE:{
-            DrawPlane(vector3D_to_vector3(transform.p), s.plane.lenght, default_color);
-        }
-        case SPHERE:{
-            DrawSphere(vector3D_to_vector3(transform.p),s.sphere.radius, default_color);
-        }
-    }
-}
-void RenderMaterialShape(ShapeAPI shape, Transform3D transform, float scale, MaterialAPI material){
+bool UpdateCamera3D(Vector3D position, Vector3D look, Vector3D up){
     //TODO
 }
+
+ModelAPI CreateSphereModel(float radius, int slices, int rings, Transform3D transform, ColorRGBA tint){
+    Mesh SphereMesh = GenMeshSphere(radius, slices, rings);
+
+    ID id = FindNewModelID();
+    scenes[current_scene].model_array[id] = LoadModelFromMesh(SphereMesh);
+    scenes[current_scene].transform_array[id] = Transform3D_to_Transform(transform);
+    scenes[current_scene].tint_array[id] = ColorRGBA_to_Color(tint); 
+    scenes[current_scene].valid[id] = true;
+
+    return id;
+}
+ModelAPI CreatePlaneModel(float length, Transform3D transform, ColorRGBA tint){
+    Mesh PlaneMesh = GenMeshPoly(4, length);
+
+    ID id = FindNewModelID();
+    scenes[current_scene].model_array[id] = LoadModelFromMesh(PlaneMesh);
+    scenes[current_scene].transform_array[id] = Transform3D_to_Transform(transform);
+    scenes[current_scene].tint_array[id] = ColorRGBA_to_Color(tint); 
+    scenes[current_scene].valid[id] = true;
+    //TODO: errores
+
+    return id;
+}
+
+SceneAPI CreateScene(){
+    Scene scene;
+    SceneAPI scene_id = ++last_scene;
+    scene.last_model = 0;
+    scene.free_space.stack_pointer = 0;
+    for (ID i = 0; i < NUM_MODELS; i++){
+        scene.valid[i] = false;
+    }
+    scenes[scene_id] = scene;
+    return scene_id;
+}
+
+void SelectScene(SceneAPI scene){
+    current_scene = scene;
+}
+
+void RenderScene(){
+    for (ID i = 0; i < NUM_MODELS; i++){
+        if (scenes[current_scene].valid[i]){
+            Transform t = scenes[current_scene].transform_array[i];
+            Vector3 rotation = {0,0,0}; //TODO: poner aquí lo que sería el vector 'up' del quaternion y la rotación en ese ángulo
+            DrawModel( //TODO: poner esto en modo ex para poder cargar modelos más complejos
+                scenes[current_scene].model_array[i],
+                t.translation,
+                1,
+                scenes[current_scene].tint_array[i]
+            );
+        }
+    }
+}
+
 void StartWindow(int width, int height, const char* name){
     InitWindow(width, height, name);
     if (!IsWindowReady()){

@@ -222,9 +222,12 @@ int main(int, const char*const*)
 #include <raylib.h>
 int main(void)
 {
-    ShapeAPI s = CreateSphereShape(10);
     Camera3DAPI c = CreateCamera3D({50,0,0},{0,0,0},{0,1,0},90,1);
+    SceneAPI scene = CreateScene();
+
     StartWindow(512,512,"hola");
+
+
     while(!WindowClosed()){
         StartRendering();
 
@@ -232,15 +235,10 @@ int main(void)
 
         StartMode3D(c);
 
-        std::cout << GetRenderError().error<<"\n";
-        Transform3D t = {
-            {0,0,0},
-            {0,0,0},
-            {1,1,1},
-        };
-        RenderShape(s,t,1);
+        RenderScene();
 
         StopMode3D();
+
         StopRendering();
     }
     std::cout << "ERROR: " << GetRenderError().error << "\n";

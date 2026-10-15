@@ -22,7 +22,7 @@ for file in $sources; do
     echo "$file"
 done
 
-g++ $sources $libraries -o "./bin/$name"
+g++ $sources $libraries -o "./bin/$name" -g
 
 if [[ $1 == "run" ]]; then
     ./bin/$name
