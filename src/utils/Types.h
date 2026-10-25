@@ -25,7 +25,7 @@ typedef struct Transform3D {
 	Quaternion3D q;
 	Vector3D p;
         Vector3D scale;
-}Transform3D;
+}Transform3D; //TODO: Quitar este transform
 
 typedef struct Matrix4 {
 	float m0, m4, m8, m12;

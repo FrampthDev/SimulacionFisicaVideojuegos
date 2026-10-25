@@ -214,3 +214,7 @@ void StopWindow(){
 bool WindowClosed(){
     return WindowShouldClose();
 }
+
+void UpdateCameraRAYLIB(){
+    UpdateCamera(&cameras_array[0], CAMERA_FIRST_PERSON);
+}

@@ -1,6 +1,6 @@
-﻿#ifndef Scene0_h
+﻿/*
+#ifndef Scene0_h
 #define Scene0_h
-
 #include "Scene.h"
 #include "../Particle.h"
 
@@ -24,3 +24,4 @@ private:
 };
 
 #endif
+*/

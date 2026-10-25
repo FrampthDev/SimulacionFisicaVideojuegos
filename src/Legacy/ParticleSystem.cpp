@@ -1,3 +1,4 @@
+/*
 #include "ParticleSystem.h"
 #include "scenes/Scene.h"
 #include <immintrin.h>
@@ -34,4 +35,4 @@ void ParticleSystem::create_particles(int particles) {
     }
 
 
-}
+}*/

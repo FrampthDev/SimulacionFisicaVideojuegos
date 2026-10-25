@@ -1,3 +1,4 @@
+/*
 #include "Scene1.h"
 
 
@@ -45,7 +46,7 @@ void Scene1::init() {
             break;
         }
     }
-}*/
+}
 void Scene1::cleanup() {
     //for (RenderItem* ri : render_item_vector) {
     //    if (ri != nullptr)
@@ -61,4 +62,4 @@ void Scene1::update(double dt) {
     for (Particle* p : particle_pool) {
         p->integrate(dt, *p); // TODO: construir una interfaz por encima para no llamar con la misma partícula como ref
     }
-}
+}*/

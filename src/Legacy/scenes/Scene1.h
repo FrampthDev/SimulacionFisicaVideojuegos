@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "./Scene.h"
 #include <vector>
@@ -36,4 +37,4 @@ private:
         //render_item_vector.push_back(p->render_item);
     }
 };
-
+*/

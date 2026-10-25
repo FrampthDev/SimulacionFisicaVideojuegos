@@ -1,4 +1,5 @@
-﻿#include "Scene0.h"
+﻿/*
+#include "Scene0.h"
 
 
 #include "../utils/Vector3D.h"
@@ -33,4 +34,4 @@ void Scene0::update(double dt) {
     for(Particle* p : particle_vector){
         p->integrate(dt, *p); // TODO: construir una interfaz por encima para no llamar con la misma partícula como ref
     }
-}
+}*/

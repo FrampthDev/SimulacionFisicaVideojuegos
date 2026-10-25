@@ -40,6 +40,7 @@ void SelectScene(SceneAPI);
 // Change fov too
 Camera3DAPI CreateCamera3D(Vector3D position, Vector3D look, Vector3D up, float fov, int projection);
 bool UpdateCamera3D(Vector3D position, Vector3D look, Vector3D up);
+void UpdateCameraRAYLIB();
 
 void RenderScene();
 

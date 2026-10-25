@@ -1,14 +1,15 @@
+/*
 #pragma once
 #include "Scene.h"
-#include "../utils/Vector3D.h"
+//#include "../utils/Vector3D.h"
 
-#include "../ParticleSystem.h"
+//#include "../ParticleSystem.h"
 
 
 class Scene2 : public Scene
 {
 private:
-    ParticleSystem p_sys;
+    //ParticleSystem p_sys;
     //physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(0.2f));
    
 public:
@@ -16,4 +17,4 @@ public:
     void init() override;
     void cleanup() override;
     void update(double dt) override;
-};
+};*/

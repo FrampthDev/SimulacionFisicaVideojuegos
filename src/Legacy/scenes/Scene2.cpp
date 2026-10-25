@@ -1,10 +1,11 @@
+/*
 #include "Scene2.h"
 #include <immintrin.h>
 
 
-Scene2::Scene2(std::string name) : Scene(std::move(name)) {
-	p_sys = ParticleSystem(this);
-}
+//Scene2::Scene2(std::string name) : Scene(std::move(name)) {
+//	p_sys = ParticleSystem(this);
+//}
 void Scene2::init() {
 	for (size_t i = 0; i < MAX_PARTICLES; ++i) Particles.active[i] = false;
 
@@ -48,4 +49,4 @@ void Scene2::update(double dt) {
 	
 	p_sys.create_particles(5);
 
-}
+}*/
