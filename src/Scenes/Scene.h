@@ -1,7 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../utils/Types.h"
 #include "../Globals.h"
 
 // NO SE DEBE PODER ESCRIBIR EN LA ENTIDAD 0. Si se escribe en la entidad 0 no pasa nada. Siempre tiene que mantenerse nula.
@@ -23,13 +22,41 @@ typedef struct vector3D_array{
     float z[MAX_ENTITIES];
 } vector3D_array;
 
+typedef enum{
+    VECTOR3D,
+    BOX,
+}ShapeType;
+
+typedef enum{
+    LINEAL      = 0,
+    WIND        = 1,
+    WHIRLWIND   = 2,
+    EXPLOSION   = 3,
+}ForceType;
+
+typedef struct{
+    ShapeType type;
+    union{
+        struct{
+            float x; float y; float z;
+        }vector3D; 
+        struct{
+            struct{float x; float y; float z;
+            }position;
+            float lenght;
+            float width;
+        }box;
+    };
+} Shape;
+
 typedef enum Tags{
     VALID           = 1 << 0,
     TRANSFORM       = 1 << 1,
     PARTICLE_SYSTEM = 1 << 2,
     RENDER          = 1 << 3,
     LIFE_TIME       = 1 << 4,
-    PARTICLE        = 1 << 5, // For rendering porpouses
+    PARTICLE        = 1 << 5, // For rendering porpouses TODO change this
+    TIMER           = 1 << 6,
 } Tags;
 
 // Los valores 1 de los array son valores _Por defecto_. No se deben usar para almacenar entidades.
@@ -48,9 +75,7 @@ typedef struct Scene{
         float mass[MAX_ENTITIES];
         float damping[MAX_ENTITIES];
 
-        union{
-            //TODO
-        } shapes[MAX_ENTITIES];
+        Shape shape[MAX_ENTITIES];
 
         // PARTICLE
         float life_time[MAX_ENTITIES];
@@ -58,18 +83,44 @@ typedef struct Scene{
 
         // FORCE GENERATOR
         // TODO: gestionar el borrado y la creación dinámica de generadores de fuerza con un stack o una queue
+        // TODO: rehacer el sistema de máscaras
         ENTITY force_generators[64];
         unsigned int num_force_generators;
+        ForceType force_type[64];
+        bool force_valid[64];
+        union{
+            struct{
+                float x; float y; float z;
+            }lineal;
+            struct{
+                struct {
+                    float x; float y; float z;  
+                }velocity;
+                float strength;
+            }wind;
+            struct{
+                float strength;
+                float vertical_strength;
+            }whirlwind;
+            struct{
+                float strength;
+                float time;
+                float radius;
+            }explosion;
+       }force_data[64];
 
         // PARTICLE SYSTEM 
         struct{
             float life_time[MAX_ENTITIES];
             FORCE_GENERATOR_MASK force_masks[MAX_ENTITIES];
-
         } particle_system;
+
+        // TIMER
+        float timer[MAX_ENTITIES];
 
         Tags tags[MAX_ENTITIES];
     } components;
+
     ENTITY last_entity;                     // = 1
 
     struct {
@@ -84,5 +135,7 @@ void FreeEntity(ENTITY entity, Scene* scene);
 
 FORCE_GENERATOR_MASK NewForceGenerator(Scene* scene, ENTITY e);
 void InitializeScene(Scene* scene);
+
+void EraseForceGenerator(Scene* scene, FORCE_GENERATOR_MASK mask);
 
 #endif

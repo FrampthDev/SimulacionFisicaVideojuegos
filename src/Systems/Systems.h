@@ -13,20 +13,13 @@ void ParticleSystem_Update(Scene* scene, ENTITY e, float dt);
 
 void RenderSystem_Update(Scene* scene, Camera3D camera);
 
-//TODO: quitar esto de aqui
-typedef struct ProfilerData{
-    double SemiEulerSystem;
-    double LifeTimeSystem;
-    double ParticleSystem;
-    double RenderSystem;
-    double GuiSystem;
-}ProfilerData;
-
 void GuiSystem_Update(Scene* scene, ProfilerData* data);
 
 // TODO: Cambiar estos bools feos
-void InputSystem_Update(bool* cursor, bool* can_move);
+void InputSystem_Update(Scene* scene, bool* cursor, bool* can_move, Camera3D* cam);
 
 void ForceGeneratorSystem_Update(Scene* scene, ENTITY e, Tags t);
+
+void TimerSystem_Update(Scene* scene, ENTITY e);
 
 #endif

@@ -1,23 +1,24 @@
 #include "Scene.h"
 #include "../Error/Error.h"
+#include "../Globals.h"
 
 ENTITY FindNewEntitySpace(Scene* scene){
     ENTITY ret = 0;
     if (scene->free_space.last_free > 0){
+        scene->free_space.last_free--;
         ret = scene->free_space.stack[scene->free_space.last_free];
         scene->components.tags[ret] = VALID;
-        scene->free_space.last_free--;
         scene->num_entities++;
+        return ret;
     }
-    else if (scene->last_entity != MAX_ENTITIES - 1){
+    else if (scene->last_entity < MAX_ENTITIES){
         ret = scene->last_entity;
         scene->components.tags[ret] = VALID;
         scene->last_entity++;
         scene->num_entities++;
+        return ret;
     }
-    else{
-        LogError();
-    }
+    LogError(&pd);
     return ret;
 }
 
@@ -64,14 +65,16 @@ void InitializeScene(Scene* scene){
     for (ENTITY e = 0; e < MAX_ENTITIES; ++e){
         scene->components.tags[e] = 0;
     }
-
     scene->last_entity = 1;
     scene->num_entities = 0;
 }
 
 FORCE_GENERATOR_MASK NewForceGenerator(Scene* scene, ENTITY e){
     FORCE_GENERATOR_MASK mask = 1 << scene->components.num_force_generators;
-    scene->components.force_generators[scene->components.num_force_generators] = e;
+    scene->components.force_generators[mask] = e;
     scene->components.num_force_generators++;
     return mask;
+}
+void EraseForceGenerator(Scene* scene, FORCE_GENERATOR_MASK mask){
+
 }

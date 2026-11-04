@@ -14,7 +14,6 @@ void RenderSystem_Update(Scene* scene, Camera3D camera){
                 if (scene->components.tags[e] & PARTICLE_SYSTEM) DrawSphere(position, 1, RED);
                 else if(scene->components.tags[e] & PARTICLE) DrawSphere(position, scene->components.life_time[e] * 0.1, BLUE);
             }
-
         }
         EndMode3D();
  
