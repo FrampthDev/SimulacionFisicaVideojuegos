@@ -2,12 +2,14 @@
 #define SCENE_H
 
 #include "../Globals.h"
+#include <stdio.h>
+#include <stdint.h>
 
 // NO SE DEBE PODER ESCRIBIR EN LA ENTIDAD 0. Si se escribe en la entidad 0 no pasa nada. Siempre tiene que mantenerse nula.
 
 #define MAX_ENTITIES 10000
 
-#define FORCE_GENERATOR_MASK unsigned long int
+#define FORCE_GENERATOR_MASK uint64_t
 
 typedef struct quaternion_array{
     float x[MAX_ENTITIES];
@@ -24,15 +26,9 @@ typedef struct vector3D_array{
 
 typedef enum{
     VECTOR3D,
+    SPHERE,
     BOX,
 }ShapeType;
-
-typedef enum{
-    LINEAL      = 0,
-    WIND        = 1,
-    WHIRLWIND   = 2,
-    EXPLOSION   = 3,
-}ForceType;
 
 typedef struct{
     ShapeType type;
@@ -41,9 +37,11 @@ typedef struct{
             float x; float y; float z;
         }vector3D; 
         struct{
-            struct{float x; float y; float z;
-            }position;
+            float radius;
+        } sphere;
+        struct{
             float lenght;
+            float height;
             float width;
         }box;
     };
@@ -55,10 +53,20 @@ typedef enum Tags{
     PARTICLE_SYSTEM = 1 << 2,
     RENDER          = 1 << 3,
     LIFE_TIME       = 1 << 4,
-    PARTICLE        = 1 << 5, // For rendering porpouses TODO change this
+    SHAPE           = 1 << 5,
     TIMER           = 1 << 6,
+    // FORCE GENERATORS
+    GRAVITY         = 1 << 8,
+    WIND            = 1 << 9,
+    WHIRLWIND       = 1 << 10,
+    EXPLOSION       = 1 << 11,
+    //
+    PARTICLE        = 1 << 12,
 } Tags;
-
+typedef enum {
+    LINEAL,
+    NORMAL,
+} Distribution;
 // Los valores 1 de los array son valores _Por defecto_. No se deben usar para almacenar entidades.
 typedef struct Scene{
     ENTITY num_entities;
@@ -79,50 +87,54 @@ typedef struct Scene{
 
         // PARTICLE
         float life_time[MAX_ENTITIES];
-        FORCE_GENERATOR_MASK force_mask[MAX_ENTITIES];
-
-        // FORCE GENERATOR
-        // TODO: gestionar el borrado y la creación dinámica de generadores de fuerza con un stack o una queue
-        // TODO: rehacer el sistema de máscaras
-        ENTITY force_generators[64];
-        unsigned int num_force_generators;
-        ForceType force_type[64];
-        bool force_valid[64];
-        union{
-            struct{
-                float x; float y; float z;
-            }lineal;
-            struct{
-                struct {
-                    float x; float y; float z;  
-                }velocity;
-                float strength;
-            }wind;
-            struct{
-                float strength;
-                float vertical_strength;
-            }whirlwind;
-            struct{
-                float strength;
-                float time;
-                float radius;
-            }explosion;
-       }force_data[64];
+        float max_life_time[MAX_ENTITIES];
 
         // PARTICLE SYSTEM 
         struct{
             float life_time[MAX_ENTITIES];
-            FORCE_GENERATOR_MASK force_masks[MAX_ENTITIES];
+            Tags tags[MAX_ENTITIES];
+            bool initial_movement[MAX_ENTITIES];
+            struct{
+                float x[MAX_ENTITIES];
+                float y[MAX_ENTITIES];
+                float z[MAX_ENTITIES];
+            }initial_velocity;
         } particle_system;
 
         // TIMER
         float timer[MAX_ENTITIES];
 
         Tags tags[MAX_ENTITIES];
-    } components;
+
+   } components;
 
     ENTITY last_entity;                     // = 1
 
+    //FORCE GENERATORS
+    struct{
+        struct{
+            float x,y,z;
+        }gravity;
+        struct{
+            struct{
+                float x,y,z;
+            }velocity;
+            float strength;
+        }wind;
+        struct{
+            float strength, vertical_strength;
+            float x, y, z;
+        }whirlwind;
+        struct{
+            float strength, time, timer, max_time, radius;
+            float x, y, z;
+            bool exploding;
+        }explosion;
+
+
+        bool gravity_active, wind_active, whirlwind_active, explosion_active;
+    }force_generators;
+       // Free entities memory management
     struct {
         ENTITY stack[MAX_ENTITIES];         // 8 bytes * MAX_ENTITIES
         ENTITY last_free;                   // = 1
@@ -133,9 +145,9 @@ typedef struct Scene{
 ENTITY FindNewEntitySpace(Scene* scene);
 void FreeEntity(ENTITY entity, Scene* scene);
 
-FORCE_GENERATOR_MASK NewForceGenerator(Scene* scene, ENTITY e);
 void InitializeScene(Scene* scene);
 
-void EraseForceGenerator(Scene* scene, FORCE_GENERATOR_MASK mask);
+uint32_t NewRandomID();
+
 
 #endif

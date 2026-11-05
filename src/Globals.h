@@ -1,9 +1,15 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define ENTITY unsigned long int
-#include <stdio.h>
+#include <stdint.h>
 
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 1080
+
+
+#define ENTITY uint16_t
+#define MAX_FORCE_GENERATORS 64
+#define SHAPE_TIME_SCALE_FACTOR 0.1
 typedef struct{
 
 }GuiData;

@@ -14,6 +14,7 @@ ProfilerData profiler_data;
 bool cursor;
 bool can_move;
 
+
 int main(void)
 {
     InitWindow(1080,1080,"SIM");
@@ -41,44 +42,30 @@ int main(void)
     SetTargetFPS(TARGET_FPS);
 
     // generador de fuerzas gravedad
-    ENTITY f_g = FindNewEntitySpace(&scene);
-    FORCE_GENERATOR_MASK f_g_m = NewForceGenerator(&scene, f_g);
-    scene.components.force_type[f_g_m] = LINEAL;
-    scene.components.force_data[f_g_m].lineal.y = -9.8;
+    
+    scene.force_generators.gravity.y = -9.8;
 
-    // generador de fuerzas viento
-    ENTITY f_w = FindNewEntitySpace(&scene);
-    FORCE_GENERATOR_MASK f_w_m = NewForceGenerator(&scene, f_w);
-    scene.components.force_type[f_w_m] = WIND;
-    scene.components.force_data[f_w_m].wind.strength = 1;
-    scene.components.force_data[f_w_m].wind.velocity.z = 5;
+    scene.force_generators.wind.velocity.z = 10;
+    scene.force_generators.wind.strength = 3;
 
-    // generador de fuerzas torbellino
-    ENTITY f_t = FindNewEntitySpace(&scene);
-    FORCE_GENERATOR_MASK f_t_m = NewForceGenerator(&scene, f_t);
-    scene.components.force_type[f_t_m] = WHIRLWIND;
-    scene.components.force_data[f_t_m].whirlwind.strength = 3;
-    scene.components.force_data[f_t_m].whirlwind.vertical_strength= 20;
+    scene.force_generators.whirlwind.strength = 2;
+    scene.force_generators.whirlwind.vertical_strength = 2;
 
-    // explosión
-    ENTITY f_e = FindNewEntitySpace(&scene);
-    scene.components.tags[f_e] |= TIMER | LIFE_TIME;
-    scene.components.life_time[f_e] = 3;
-    FORCE_GENERATOR_MASK f_e_m = NewForceGenerator(&scene, f_e);
-    scene.components.force_type[f_e_m] = EXPLOSION;
-    scene.components.force_data[f_e_m].explosion.strength = 5;
-    scene.components.force_data[f_e_m].explosion.radius = 20;
-    scene.components.force_data[f_e_m].explosion.time = 0.5;
- 
+    scene.force_generators.explosion.strength = 50;
+    scene.force_generators.explosion.max_time = 10;
+    scene.force_generators.explosion.time = 0.1;
+    scene.force_generators.explosion.radius = 20;
+    scene.force_generators.explosion.exploding = false;
+
     // sistema de partículas
     p_s = FindNewEntitySpace(&scene);
-    scene.components.tags[p_s] |= PARTICLE_SYSTEM | TRANSFORM | RENDER;
-    scene.components.transform.position.x[p_s] = 0;
-    scene.components.transform.position.y[p_s] = 0;
-    scene.components.transform.position.z[p_s] = 0;
-    scene.components.particle_system.life_time[p_s] = 3;
-    scene.components.particle_system.force_masks[p_s] |= f_e_m | f_g_m;
-    
+    scene.components.tags[p_s] |= PARTICLE_SYSTEM | TRANSFORM | SHAPE;
+    scene.components.shape[p_s].type = SPHERE;
+    scene.components.shape[p_s].sphere.radius = 5;
+    scene.components.particle_system.initial_movement[p_s] = false;
+    scene.components.particle_system.life_time[p_s] = 10;
+    scene.components.particle_system.tags[p_s] = GRAVITY| WIND | WHIRLWIND | EXPLOSION;
+
     // bucle
     while(!WindowShouldClose()){
         //INPUT 
@@ -93,19 +80,31 @@ int main(void)
         profiler_data.LifeTimeSystem= 0;
         profiler_data.ForceGeneratorSystem = 0;
 
-        for (ENTITY e = 1; e <= scene.last_entity; e++){
-            if (scene.components.tags[e] & VALID){
+        //Timer explosion
+        //Tiene que estar fuera de los sistemas porque solo hay uno
+        if (scene.force_generators.explosion.exploding){
+            scene.force_generators.explosion.timer += GetFrameTime();
+        }
+        if (scene.force_generators.explosion.timer > scene.force_generators.explosion.time){
+            scene.force_generators.explosion.timer = 0;
+            scene.force_generators.explosion.exploding = false;
+        }
+ 
 
-                timer = GetTime();
-                ForceGeneratorSystem_Update(&scene, e, TRANSFORM);
-                profiler_data.ForceGeneratorSystem += GetTime() - timer;
+        for (ENTITY e = 1; e <= scene.last_entity; e++){
+
+            if (scene.components.tags[e] & VALID){
+                if(scene.force_generators.gravity_active) GravityForceGeneratorSystem_Update(&scene, e, GRAVITY);
+                if(scene.force_generators.wind_active) WindForceGeneratorSystem_Update(&scene, e, WIND);
+                if(scene.force_generators.whirlwind_active) WhirlwindForceGeneratorSystem_Update(&scene, e, WHIRLWIND);
+                ExplosionForceGeneratorSystem_Update(&scene, e, EXPLOSION);
 
                 timer = GetTime();
                 SemiEulerSystem_Update(&scene, e,TRANSFORM, D_TIME);
                 profiler_data.SemiEulerSystem += GetTime() - timer;
 
                 timer = GetTime();
-                ParticleSystem_Update(&scene, e, D_TIME);
+                ParticleSystem_Update(&scene, e, PARTICLE_SYSTEM, D_TIME);
                 profiler_data.ParticleSystem += GetTime() - timer;
 
                 timer = GetTime();
